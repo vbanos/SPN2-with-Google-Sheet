@@ -6,5 +6,5 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('SPN2 with Google Sheet
 client = gspread.authorize(creds)
 sheet = client.open("ISKME Press Mention URLs ").sheet1
 
-list_of_hashes = sheet.get_all_records()
+list_of_hashes = sheet.get_all_records() 
 print(list_of_hashes)
