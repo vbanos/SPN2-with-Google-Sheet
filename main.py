@@ -7,8 +7,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 SPN_URL = 'https://web-beta.archive.org/save/'
 LOGIN_URL = 'https://archive.org/account/login.php'
 AVAILABILITY_API_URL = 'https://archive.org/wayback/available'
-USERNAME = 'Your Username'
-PASSWORD = 'Your Password'
+USERNAME = 'Username'
+PASSWORD = 'Password'
 SCOPE = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 HEADERS = {
     'User-Agent': 'Wayback_Machine_SPN2_Google_App_Script',
@@ -21,16 +21,19 @@ def is_valid_url(url):
 
 def request_capture(url, session):
     response = session.get(url=SPN_URL + url, headers=HEADERS)
-    data = response.json()
 
-    return data['job_id']
+    try:
+        data = response.json()
+        return data['job_id']
+    except:
+        return None
 
 def request_capture_status(job_id, session):
     time.sleep(20)
     response = session.get(url=SPN_URL + '_status/' + job_id, headers=HEADERS)
-    data = response.json()
 
     try:
+        data = response.json()
         if data['status'] == 'pending':
             return request_capture_status(job_id, session)
         else:
